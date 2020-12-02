@@ -8,17 +8,13 @@ CREATE TRIGGER `after_products_update`
 AFTER update ON `products`
 FOR EACH ROW
 BEGIN 
-    DECLARE diffstock int ;
-    Declare stockdiff int ;
     DECLARE id_prod INT ;
     SET id_prod = NEW.pro_id ;
-    SET diffstock = (SELECT cast(pro_stock as signed int) - cast(pro_stock_alert as signed int) FROM products where pro_id = id_prod );
-    SET stockdiff = (SELECT cast(pro_stock_alert as signed int) - cast(pro_stock as signed int) FROM products where pro_id = id_prod );
-    
-    if (diffstock < 0) and (id_prod not in (select codart from `commander_articles`)) then 
-         insert into `commander_articles` values (id_prod,stockdiff,(select current_date())) ;
-    else if (diffstock < 0) then
-       update `commander_articles` SET qte = stockdiff, datec = (select current_date())  WHERE codart=id_prod ;
+   
+    if ((cast(NEW.pro_stock as signed int) - cast(New.pro_stock_alert as signed int)) < 0 and (id_prod not in (select codart from `commander_articles`))) then 
+         insert into `commander_articles` values (id_prod,cast(NEW.pro_stock_alert as signed int) - cast(NEW.pro_stock as signed int),(select current_date())) ;
+    else if ((cast(NEW.pro_stock as signed int) - cast(New.pro_stock_alert as signed int)) < 0 ) then
+       update `commander_articles` SET qte = cast(NEW.pro_stock_alert as signed int) - cast(NEW.pro_stock as signed int), datec = (select current_date())  WHERE codart=id_prod ;
         end if;
     end if;
     
@@ -30,6 +26,6 @@ delimiter ;
 
 update `products` set `pro_stock` = 6 where `pro_id` = 8; /*Réussi pas ligne crée dans commander_articles */
 
-update `products` set `pro_stock` = 4 where `pro_id` = 8; /*Réussi ligne crée dans commander_articles avec qte = 3 */
+update `products` set `pro_stock` = 4 where `pro_id` = 8; /*Réussi ligne crée dans commander_articles avec qte = 1 */
 
 update `products` set `pro_stock` = 3 where `pro_id` = 8; /*Réussi ligne modifié dans commander_articles avec qte = 2*/

@@ -39,11 +39,13 @@ DELIMITER ;
 
 /*test*/
 
-/*
+/*Commande existe avec ligne de commande*/
 call p_facture(6,@tot);
+
+/*Commande inexistante ou sans ligne de commande*/
+/*
 call p_facture(1,@tot);
 call p_facture(1000,@tot);
-
 */
 
 
