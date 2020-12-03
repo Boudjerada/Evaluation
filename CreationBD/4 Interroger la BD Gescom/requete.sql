@@ -78,7 +78,8 @@ where `ode_discount` = (select max(`ode_discount`) from `orders_details`);
 
 select count(*) as 'Nombre de client Canadiens'
 from `customers`
-where `cus_countries_id` = "CA"; 
+join `countries` on `cou_id` = `cus_countries_id`
+where `cou_name` = "Canada"; 
 
 /*Q16. Afficher le détail des commandes de 2020*/
 
@@ -105,9 +106,9 @@ where year(`ord_order_date`) = 2020;
 /*Q19. Quel est le panier moyen ?*/
 /*resultat erreur sur phpmyadmin*/
 
-select  avg(sum(`ode_quantity` * `ode_unit_price`))
-from `orders_details`
-group by `ode_ord_id`;
+select avg(pannier) as 'Moyenne pannier moyen' from (select sum(`ode_quantity` * (`ode_unit_price` - ( (`ode_unit_price` * `ode_discount`) / 100) )) as `pannier`
+            from `orders_details`
+            group by `ode_ord_id`) as `sous`;
 
 /*Q20. Lister le total de chaque commande par total décroissant (Afficher numéro de commande, date, total et nom du client)*/
 
@@ -133,4 +134,4 @@ where `pro_id`= 25 or `pro_id`= 27;
 /*Q24. Supprimer les produits non vendus de la catégorie "Tondeuses électriques". Vous devez utilisez une sous-requête sans indiquer de valeurs de clés*/
 
 DELETE FROM `products`
-where `pro_cat_id` = (select `cat_id` from `categories` where `cat_name`="Tondeuses électriques") and `pro_stock`!=0;
+where `pro_cat_id` = (select `cat_id` from `categories` where `cat_name`="Tondeuses électriques") and `pro_id` not in (select `ode_pro_id` from `orders_details`);

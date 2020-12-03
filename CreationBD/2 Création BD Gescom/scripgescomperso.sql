@@ -156,13 +156,12 @@ CREATE TABLE IF NOT EXISTS `customers` (
 
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
-  `ord_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ord_id` int(10)  NOT NULL AUTO_INCREMENT,
   `ord_order_date` date NOT NULL,
   `ord_payment_date` date DEFAULT NULL,
-  `ord_ship_date` date DEFAULT NULL,
-  `ord_reception_date` date DEFAULT NULL,
   `ord_status` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `ord_cus_id` int(10) UNSIGNED NOT NULL,
+  `ord_discount` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`ord_id`),
   Foreign KEY (`ord_cus_id`) REFERENCES  `customers`(`cus_id`) 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -224,9 +223,8 @@ DROP TABLE IF EXISTS `orders_details`;
 CREATE TABLE IF NOT EXISTS `orders_details` (
   `ode_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ode_unit_price` decimal(7,2) NOT NULL,
-  `ode_discount` decimal(4,2) DEFAULT NULL,
   `ode_quantity` int(5) NOT NULL,
-  `ode_ord_id` int(10) UNSIGNED NOT NULL,
+  `ode_ord_id` int(10)  NOT NULL,
   `ode_pro_id` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ode_id`),
   FOREIGN KEY (`ode_ord_id`) REFERENCES `orders` (`ord_id`) ,
@@ -235,6 +233,19 @@ CREATE TABLE IF NOT EXISTS `orders_details` (
 
 
 
+--
+-- Structure de la table `ship`
+--
+
+DROP TABLE IF EXISTS `ship`;
+CREATE TABLE IF NOT EXISTS `ship` (
+  `shi_id` int(10)  NOT NULL AUTO_INCREMENT,
+  `shi_ship_date` date NOT NULL,
+  `shi_reception_date` date DEFAULT NULL,
+  `shi_ord_id` int(10) UNIQUE NOT NULL,
+  PRIMARY KEY (`shi_id`),
+  FOREIGN KEY (`shi_ord_id`) REFERENCES `orders` (`ord_id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
