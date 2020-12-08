@@ -23,14 +23,9 @@ BEGIN
          insert into `commander_articles` values (id_prod,cast(NEW.pro_stock_alert as signed int) - cast(NEW.pro_stock as signed int),(select current_date())) ;
     else if ((cast(NEW.pro_stock as signed int) - cast(New.pro_stock_alert as signed int)) < 0 ) then
         update `commander_articles` SET qte = cast(NEW.pro_stock_alert as signed int) - cast(NEW.pro_stock as signed int), datec = (select current_date())  WHERE codart=id_prod ; 
+        else  DELETE FROM `commander_articles` WHERE codart=id_prod ;
         end if;
-    end if;
-
-    if  ((cast(NEW.pro_stock as signed int) - cast(New.pro_stock_alert as signed int)) >= 0 ) then
-        DELETE FROM `commander_articles` WHERE codart=id_prod ; 
-    END IF;
-    
-    
+    end if; 
 END ||
 
 delimiter ;

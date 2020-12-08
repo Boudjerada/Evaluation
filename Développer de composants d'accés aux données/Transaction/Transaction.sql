@@ -40,3 +40,4 @@ commit;
 
 /*Le pépiniériste le plus ancien est l'employé id38, on peut voir aprés cette transaction que tout les pépiniériste ont comme supérieur l'employé 38. D'autre part, l'employé partant en retraite qui a l'id 59 a pour poste l'id 36 de retraité.
   Le supérieur de l'employé parti en retraite a l'id 4 qui a été attribué au nouveau manager id38. Le poste du nouveau manager a été mit à jour est devient id2 celui de manager. Le salaire de l'id 38 a prit 5% pour passer de 20450 euros à 21472.50 euros*/
+
