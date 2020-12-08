@@ -1115,12 +1115,7 @@ ALTER TABLE `suppliers`
   ADD CONSTRAINT `suppliers_ibfk_1` FOREIGN KEY (`sup_countries_id`) REFERENCES `countries` (`cou_id`);
 COMMIT;
 
-DROP TABLE IF EXISTS `commander_articles`;
-CREATE TABLE IF NOT EXISTS `commander_articles` (
-  `codart` int(10) NOT NULL,
-  `qte` int(10) NOT NULL,
-  `datec` Date NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
